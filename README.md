@@ -1,1 +1,1 @@
-a readme for assignment 6 CS411 Fall 2025
+The Repo for assignment 6 CS411 Fall 2025
