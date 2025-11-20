@@ -1,6 +1,6 @@
-// huffcode.cpp  UNFINISHED
-// Glenn G. Chappell
-// 2025-11-10
+// huffcode.cpp
+// Alex Johnson
+// 2025-11-19
 //
 // For CS 411 Fall 2025
 // Assignment 6, Exercise A
@@ -11,11 +11,30 @@
 using std::string;
 #include <unordered_map>
 using std::unordered_map;
+#include <algorithm>
+using std::sort;
+#include <memory> 
+using std::unique_ptr; 
+using std::make_unique;
+#include <vector>
+using std::vector;
+#include <utility>
+using std::pair;
 
+bool greaterThan(const pair<char, int>& a,
+                 const pair<char, int>& b)
+{
+    return a.second > b.second;
+}
 
 void HuffCode::setWeights(const unordered_map<char, int> & theweights)
 {
-    // TODO: WRITE THIS!!!
+    vector<pair<char, int>> characters;
+     for (auto iter = theweights.begin(); iter != theweights.end(); iter++)
+     {
+        characters.push_back(*iter);
+     }
+    sort(characters.begin(), characters.end(), greaterThan);
 }
 
 
