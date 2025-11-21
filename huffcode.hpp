@@ -27,12 +27,13 @@ public:
     // Compiler-generated default ctor, copy ctor, copy =, dctor used
     
     
-    // 1-param ctor
+    // 2-param ctor
 	// _data is set to given data
 	// _left and _right are set to nullptr
 	// No-Throw Guarantee 
-	HuffCode(const std::string & data)             
+	HuffCode(const std::string & data, const int & freq)             
 		:_data(data),
+        _freq(freq),
 		_left(nullptr),
 		_right(nullptr)
     {}
@@ -45,13 +46,15 @@ public:
 
     std::string decode(const std::string & codestr) const;
 
+    bool operator<(const HuffCode& other) const;
+
 // ***** HuffCode: data members *****
 private:
     std::string _data;  //Data for node
+    int _freq;          //Frequency for node
     std::unique_ptr<HuffCode> _left;    //Ptr to left node 
 	std::unique_ptr<HuffCode> _right;   //Ptr to right node
 };  // End class HuffCode
-
 
 #endif //#ifndef FILE_HUFFCODE_HPP_INCLUDED
 

@@ -20,21 +20,27 @@ using std::make_unique;
 using std::vector;
 #include <utility>
 using std::pair;
+#include <queue>
+using std::priority_queue;
+#include <functional>
+using std::greater;
 
-bool greaterThan(const pair<char, int>& a,
-                 const pair<char, int>& b)
+void HuffCode::setWeights(const unordered_map<char, int> & theweights) 
 {
-    return a.second > b.second;
-}
+     priority_queue<HuffCode, vector<HuffCode>, greater<HuffCode>> HuffQueue;
 
-void HuffCode::setWeights(const unordered_map<char, int> & theweights)
-{
-    vector<pair<char, int>> characters;
      for (auto iter = theweights.begin(); iter != theweights.end(); iter++)
      {
-        characters.push_back(*iter);
+        HuffCode newNode = HuffCode(string(1, iter->first), iter-> second);
      }
-    sort(characters.begin(), characters.end(), greaterThan);
+
+     while(HuffQueue.size() > 1)
+     {
+        HuffCode nodeA = HuffQueue.top();
+        HuffQueue.pop();
+        HuffCode nodeB = 
+     }
+
 }
 
 
@@ -51,3 +57,7 @@ string HuffCode::decode(const string & codestr) const
     return "";  // DUMMY
 }
 
+bool HuffCode::operator<(const HuffCode& other) const {
+        // Example: sort by x, break ties with y
+        return _freq < other._freq;
+    }
