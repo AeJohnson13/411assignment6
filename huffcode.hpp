@@ -17,6 +17,10 @@
 #include <memory> 
 // For std::unique_ptr, std::make_unique
 
+
+//Forward Decleration so that compareNodes can be declared as friend later;
+struct compareNodes;
+
 // Class HuffCode
 // Encoding & decoding using a Huffman code
 class HuffCode {
@@ -26,6 +30,8 @@ public:
 
     // Compiler-generated default ctor, copy ctor, copy =, dctor used
     
+
+    friend struct compareNodes;
     
     // 2-param ctor
 	// _data is set to given data

@@ -19,26 +19,36 @@ using std::make_unique;
 #include <vector>
 using std::vector;
 #include <utility>
+using std::move;
 using std::pair;
 #include <queue>
 using std::priority_queue;
-#include <functional>
-using std::greater;
 
 void HuffCode::setWeights(const unordered_map<char, int> & theweights) 
 {
-     priority_queue<HuffCode, vector<HuffCode>, greater<HuffCode>> HuffQueue;
+     priority_queue<unique_ptr<HuffCode>, vector<unique_ptr<HuffCode>>, compareNodes> HuffQueue;
 
      for (auto iter = theweights.begin(); iter != theweights.end(); iter++)
      {
-        HuffCode newNode = HuffCode(string(1, iter->first), iter-> second);
+      
+        HuffQueue.push(make_unique<HuffCode>(string(1, iter->first), iter-> second));
      }
 
      while(HuffQueue.size() > 1)
      {
-        HuffCode nodeA = HuffQueue.top();
+        auto left = move(HuffQueue.top()); 
         HuffQueue.pop();
-        HuffCode nodeB = 
+        auto right = move(HuffQueue.top()); 
+        HuffQueue.pop();
+
+        int newFreq = nodeA->_freq + nodeB ->_freq;
+        string newData = nodeA->_data + nodeB ->_data;
+
+        unique_ptr<HuffCode> parentNode = make_unique<HuffCode>(newData, newFreq);
+        //parentNode->_left = nodeA;
+        //parentNode->_right = nodeB;
+
+        HuffQueue.push(parentNode);
      }
 
 }
@@ -57,7 +67,14 @@ string HuffCode::decode(const string & codestr) const
     return "";  // DUMMY
 }
 
-bool HuffCode::operator<(const HuffCode& other) const {
-        // Example: sort by x, break ties with y
-        return _freq < other._freq;
+
+
+// compareNodes
+// based on CmpEdgePtrs found here -> https://stackoverflow.com/questions/23997104/priority-queue-with-pointers-and-comparator-c
+struct compareNodes
+{
+    bool operator()(const unique_ptr<HuffCode> a, const unique_ptr<HuffCode> b) const
+    {
+        return a->_freq > b->_freq;
     }
+};

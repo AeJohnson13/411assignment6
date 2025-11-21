@@ -29,6 +29,11 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "xstring": "cpp",
+        "utility": "cpp",
+        "memory": "cpp",
+        "xhash": "cpp",
+        "type_traits": "cpp"
     }
 }
