@@ -22,22 +22,17 @@
 //Forward Decleration so that compareNodes can be declared as friend later;
 struct compareNodes;
 
-// Class HuffCode
-// Encoding & decoding using a Huffman code
-class HuffCode
- {
-// ***** HuffCode: ctors, dctor, op= *****
+class HuffTree
+{
 public:
-
-    // Compiler-generated copy ctor, copy =, dctor used
     friend struct compareNodes;
-
-    // 2-param ctor
+    friend class HuffCode;
+ // 2-param ctor
 	// _data is set to given data
     // _freq is set to give freq
 	// _left and _right are set to nullptr
 	// No-Throw Guarantee 
-	HuffCode(const std::string & data, const int & freq)             
+	HuffTree(const std::string & data, const int & freq)             
 		:_data(data),
        _freq(freq),
 		_left(nullptr),
@@ -51,7 +46,7 @@ public:
     // _freq is set to zero 
 	// _left and _right are set to nullptr
 	// No-Throw Guarantee 
-    HuffCode()
+    HuffTree()
         :_data(""),
        _freq(0),
 		_left(nullptr),
@@ -59,6 +54,27 @@ public:
     {
         //Left Empty Intentionally 
     }
+public: 
+
+void Traverse(std::unordered_map<char, std::string> & dict, std::string code) const;
+
+private:
+    std::string _data;  //Data for node
+    int _freq;          //Frequency for node
+    std::shared_ptr<HuffTree> _left;    //Ptr to left node 
+	std::shared_ptr<HuffTree> _right;   //Ptr to right node
+};
+
+
+// Class HuffCode
+// Encoding & decoding using a Huffman code
+class HuffCode
+ {
+// ***** HuffCode: ctors, dctor, op= *****
+public:
+
+    // Compiler-generated copy ctor, copy =, dctor used
+    
 // ***** HuffCode: general public functions *****
 public:
 
@@ -68,14 +84,9 @@ public:
 
     std::string decode(const std::string & codestr) const;
 
-    void Traverse(std::unordered_map<char, std::string> & dict, std::string code) const;
-
 // ***** HuffCode: data members *****
 private:
-    std::string _data;  //Data for node
-    int _freq;          //Frequency for node
-    std::shared_ptr<HuffCode> _left;    //Ptr to left node 
-	std::shared_ptr<HuffCode> _right;   //Ptr to right node
+    std::shared_ptr<HuffTree> _root;
 };  // End class HuffCode
 
 #endif //#ifndef FILE_HUFFCODE_HPP_INCLUDED
