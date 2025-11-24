@@ -22,52 +22,57 @@ using std::pair;
 using std::priority_queue;
 
 
-//debug includes
-#include <iostream>
-using std::cout;
-using std::endl;
 // compareNodes
 // based on CmpEdgePtrs found here -> https://stackoverflow.com/questions/23997104/priority-queue-with-pointers-and-comparator-c
+// Stand-alone functor class
+//  implements > operator for HuffTree._freq   
+//  used for putting shared_ptr<HuffTree> into a min heap priority queue   
 struct compareNodes
 {
     bool operator()(const shared_ptr<HuffTree> a, const shared_ptr<HuffTree> b) const
     {
-        //cout << "is " << a->_freq << " < " << b->_freq << endl;
         return a->_freq > b->_freq;
     }
 };
 
+// setWeigts
+// member function for HuffCode
+// builds a HuffTree using the chars
+// and weights given in theweights
 void HuffCode::setWeights(const unordered_map<char, int> &theweights)
 {
     priority_queue<shared_ptr<HuffTree>, vector<shared_ptr<HuffTree>>, compareNodes> HuffQueue;
 
     for (auto iter = theweights.begin(); iter != theweights.end(); iter++)
     {
-        HuffQueue.push(make_shared<HuffTree>(string(1, iter->first), iter->second));
+        HuffQueue.push(make_shared<HuffTree>(iter->first, iter->second));
     }
 
     while (HuffQueue.size() > 1)
     {
         auto left = HuffQueue.top();
-        //cout << left->_data << endl;
         HuffQueue.pop();
         auto right = HuffQueue.top();
-        //cout << right->_data << endl;
         HuffQueue.pop();
 
         int newFreq = left->_freq + right->_freq;
-        string newData = left->_data + right->_data;
 
-        shared_ptr<HuffTree> parentNode = make_shared<HuffTree>(newData, newFreq);
+        shared_ptr<HuffTree> parentNode = make_shared<HuffTree>(' ', newFreq);
         parentNode->_left = left;
         parentNode->_right = right;
 
-        //cout << "made parent"<< newFreq << " : "<< newData << endl;
         HuffQueue.push(parentNode);
     }
     auto final = HuffQueue.top();
     _root = final;
 }
+// Traverse
+// member function for HuffTree
+// does an inorder traverse of a hufftree
+// stores codes in given unordered map dict
+// 
+// used in HuffCode::encode 
+//
 void HuffTree::Traverse(unordered_map<char, string> &dict, string code) const
 {
     if (_left != nullptr)
@@ -80,13 +85,17 @@ void HuffTree::Traverse(unordered_map<char, string> &dict, string code) const
     }
     if (_right == nullptr && _left == nullptr)
     {
-        char key = _data[0];
-        //cout << key << " : " << code << endl;
+        char key = _data;
         pair<char, string> newEntry = {key, code};
-        dict.insert(newEntry);
+        dict[key] = code;
     }
 }
 
+
+// encode 
+// member function for HuffCode
+// takes a string and turns it into a
+// bitstring encoded with HuffTree stored in HuffCode
 string HuffCode::encode(const string &text) const
 {
     unordered_map<char, string> dict;
@@ -101,6 +110,11 @@ string HuffCode::encode(const string &text) const
     return fullCode;
 }
 
+
+// decode 
+// member function for HuffCode
+// takes a bitstring and turns it into a
+// string decoded with HuffTree with root stored in HuffCode
 string HuffCode::decode(const string &codestr) const
 {
 

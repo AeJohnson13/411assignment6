@@ -143,7 +143,6 @@ bool matchPattern(const string & pattern,
 // Test Cases
 // *********************************************************************
 
-
 TEST_CASE( "class HuffCode - Types" )
 {
     HuffCode h;

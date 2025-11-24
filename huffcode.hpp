@@ -22,6 +22,8 @@
 //Forward Decleration so that compareNodes can be declared as friend later;
 struct compareNodes;
 
+// Class HuffTree
+// class for huffman code tree nodes
 class HuffTree
 {
 public:
@@ -32,7 +34,7 @@ public:
     // _freq is set to give freq
 	// _left and _right are set to nullptr
 	// No-Throw Guarantee 
-	HuffTree(const std::string & data, const int & freq)             
+	HuffTree(const char & data, const int & freq)             
 		:_data(data),
        _freq(freq),
 		_left(nullptr),
@@ -40,30 +42,31 @@ public:
     {
         //Left Empty Intentionally 
     }
-
+    
     // default ctor
 	// _data is set to empty string
     // _freq is set to zero 
 	// _left and _right are set to nullptr
 	// No-Throw Guarantee 
     HuffTree()
-        :_data(""),
+        :_data(' '),
        _freq(0),
 		_left(nullptr),
 		_right(nullptr)
     {
         //Left Empty Intentionally 
     }
+    
 public: 
 
-void Traverse(std::unordered_map<char, std::string> & dict, std::string code) const;
+    void Traverse(std::unordered_map<char, std::string> & dict, std::string code) const;
 
 private:
-    std::string _data;  //Data for node
+    char _data;  //Data for node
     int _freq;          //Frequency for node
     std::shared_ptr<HuffTree> _left;    //Ptr to left node 
 	std::shared_ptr<HuffTree> _right;   //Ptr to right node
-};
+}; // End class HuffTree
 
 
 // Class HuffCode
